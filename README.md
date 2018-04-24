@@ -60,4 +60,6 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)
 - Can also look at features that use a subset of 3 features by building a 3d plot (this is awesome)
 
 ### K-nearest neighbors classification
-- 
+- aka `k-NN`, can be used for classification and regression. An example of instance based or memory based supervised learning (memorize labeled examples from training set and use this to classify new objects later).
+- `k` refers to the number of nearest neighbors the classifier will retrieve and use to make its predicition.
+
