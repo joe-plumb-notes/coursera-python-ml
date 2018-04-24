@@ -22,8 +22,35 @@
 - **Find the optimal model** that gives the best evaluation outcome for the problem. 
 
 ### Python tools for ML
-- `scikit-learn, scipy, numpy, pandas, matplotlib` will be used here. `skikit-learn` is the most popular python library for ML, and forms the basis of this course. Many sample applications and code online.
+- `scikit-learn, scipy, numpy, pandas, matplotlib` will be used here. `scikit-learn` is the most popular python library for ML, and forms the basis of this course. Many sample applications and code online.
 - scikitlearn user guide and API reference are useful. 
 - `import scipy as sp`
 - We'll be using scipy to generate _sparse matrices_, big tables that consist mostly of 0s.
 - numpy provides fundamental data structures (e.g. multi dimensional arrays). Typically data fed to scikit is in this format.
+
+### An example problem
+- Object recognition system - simple but relects the same key concepts in real world systems.
+- _Training a classifier to distinguish between different types of fruit_
+- Recorded measurements in a table of different fruits. 
+- Predicting fruit types might seem silly and moot .. but food companies do rely on ML techniques like this, for automated quality control, screening for bad fruit whilst processing etc. (Rotton fruit detection uses UV light that can detect interior decay, which is less visible on the surface .. but it's still taking an input and using this to score and make decisions)
+- In supervised learning, the data will also include a label column - this can be derived from info in one or more columns.
+- If we use data to train, we cannot use this same data to evaluate. Evaluation should always be done using unseen data.
+- `train_test_split` randomly shuffles the data set and splits off a certain percentage for training, and puts the rest in a different variable for testing. Here we're doing 75/25 split, which is pretty standard.
+- `X` for the different variables, `y` for the labels, e.g.:
+```
+X = fruits[['height', 'width', 'mass', 'color_score']]
+y = fruits['fruit_label']
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)
+```
+- `random_state` provides seed value. 
+- Looking at the data set first (via visuals, or just having a scroll) is generally a good idea. 
+    - Gives you a sense for what's in the dataset, and any other cleaning or pre-processing you might need to do
+    - The range and distribution of values that is typical for each attribute
+    - Particularly valuable when dealing with text that is represented by multiple features that have been extracted in pre-processing. 
+    - Notice missing or noisy data
+    - Data types
+    - Not enough examples of a particular labeled class
+    - Might not need to apply ML to this problem - there might be another way to classify in a machine readable format (e.g. geolocation stored in image metadata to infer location rather than training classifier)
+- _Only use the test set for testing_ - this complete separation is important and will be covered later.
+- Can use a `matplotlib cmap` (`from matplotlib import cm`) to plot scatters/histograms breaking down each feature by the labels.
+- 
