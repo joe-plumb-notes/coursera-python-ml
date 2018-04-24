@@ -53,4 +53,11 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)
     - Might not need to apply ML to this problem - there might be another way to classify in a machine readable format (e.g. geolocation stored in image metadata to infer location rather than training classifier)
 - _Only use the test set for testing_ - this complete separation is important and will be covered later.
 - Can use a `matplotlib cmap` (`from matplotlib import cm`) to plot scatters/histograms breaking down each feature by the labels.
+- Well defined classes and separation in the feature space is a good indication that suggests the classifier is likely to be able to predict the class label from the features with good accuracy. Visualisation used in this module works well with feature sets of less than 20.
+- Unsupervised learning has different vis techniques to cover large feature dimensions (hundreds, thousands, millions of features), to represent each object.
+- Feature pair plot plots all possible pairs of features and produces scatter plot for each pair, showing whether features are correlated or not.
+- Diagonal shows histogram with distribution of feature values for that feature.
+- Can also look at features that use a subset of 3 features by building a 3d plot (this is awesome)
+
+### K-nearest neighbors classification
 - 
