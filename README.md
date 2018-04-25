@@ -29,6 +29,7 @@
 - numpy provides fundamental data structures (e.g. multi dimensional arrays). Typically data fed to scikit is in this format.
 
 ### An example problem
+For reference: [Jupyter Notebook](https://dataplatform.ibm.com/analytics/notebooks/v2/18054cb0-8084-4bcd-9243-d0c9b3efb01d/view?access_token=3224314752b5beefeb1f4194e4b03eddd94bac83f759b1de2241324cf3f00c91)
 - Object recognition system - simple but relects the same key concepts in real world systems.
 - _Training a classifier to distinguish between different types of fruit_
 - Recorded measurements in a table of different fruits. 
@@ -62,4 +63,11 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)
 ### K-nearest neighbors classification
 - aka `k-NN`, can be used for classification and regression. An example of instance based or memory based supervised learning (memorize labeled examples from training set and use this to classify new objects later).
 - `k` refers to the number of nearest neighbors the classifier will retrieve and use to make its predicition.
+- k-NN has three steps that can be specified:
+    - when it sees a previously unseen data object, it looks at the training set to find the k examples that have the closest features.
+    - then looks up class labels for those k-NN examples
+    - finally, combine the labels of those exampes to predict the label of the new object, typically, via majority vote.
+- `query point` is the point you want to classify
+- `decision boundaries` are the lines between one class region and the next. 
+- decision boundaries are based on ecludian distance. 
 
