@@ -89,5 +89,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)
 ### Overfitting and Underfitting
 - successful supervised learning is gauged on the algorithms ability to predict on unseen data.
 - algorithm will assume test set is drawn from same underlying distribution as training set - _overfitting_ typically occurs when we try to fit an overly complex model with insufficient data volumes. _The model can't see more general, global data patterns if the training set is too small_ - there is not enough data to constrain the model to respect the broader trends.
-- Understanding, detecting, and avoiding overfitting is peraps the most important aspect of applying supervised ML.
-- 
+- Understanding, detecting, and avoiding overfitting is perhaps the most important aspect of applying supervised ML.
+- Underfitting in regression example: applying linear regression when the model needs to be more complex.
+- Quadratic relationship could give a curve, provide improved fit to the training data. If we believe the relationship between variables to be a function of several different parameters, a polynomial regression may fit better, and capture more subtle trends, but also has much higher varience, leading (potentially) to overfitting (too localized to the training data)
+- 5:40
