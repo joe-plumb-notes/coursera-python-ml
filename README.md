@@ -71,3 +71,23 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)
 - `decision boundaries` are the lines between one class region and the next. 
 - decision boundaries are based on ecludian distance. 
 
+## Week 2
+### Intro to Supervised ML
+- Looking beyond k-NN to other algorithms, how to apply them, and how to interpret their results
+- _feature representation_ is taking an object (e.g. a piece of fruit) and converting it to numbers a machine can understand
+- k-NN recap:
+    - `from sklearn.model_selection import train_test_split` and `from sklean.neighbors import KNeighboursClassifier`
+    - `X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)` where `X` is feature df and `y` contains corresponding labels
+    - `knn = KNeighborsClassifier(n_neighbors = 5)`
+    - `knn.fit(X_train, y_train)`
+    - `knn.score(X_test, y_test)`
+    - `knn.predict(example_feature_data)`
+- Supervised learning can be divided into two types of tasks - classification and regression - both take a set of training data and learn mapping to a target value. Classification maps to a discrete class value (can be binary (yes or no), multi-class (fruit example), or multi-label (entitiy extraction)). Regression predicts a continuous variable.
+- Relationship between model complexity and accuracy will be explored as we learn about the new algorithms. Generally, when measuring performance against the training set, more complex models will fit the training data better and better (obviously). However, when evaluating against a test set (generally good practice .. ), there is typically an initial accuracy gain from adding model complexity, but then a decrease in test set accuracy as the model becomes overfit to the training data, and doesn't capture more general trends / patterns which allow it to generalize to unseen data. 
+- Statistically, input variables = independent variables and outcome variables = dependent variables.
+
+### Overfitting and Underfitting
+- successful supervised learning is gauged on the algorithms ability to predict on unseen data.
+- algorithm will assume test set is drawn from same underlying distribution as training set - _overfitting_ typically occurs when we try to fit an overly complex model with insufficient data volumes. _The model can't see more general, global data patterns if the training set is too small_ - there is not enough data to constrain the model to respect the broader trends.
+- Understanding, detecting, and avoiding overfitting is peraps the most important aspect of applying supervised ML.
+- 
