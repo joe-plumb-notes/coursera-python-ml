@@ -155,4 +155,17 @@ X_train_scaled = scaler.fit_transform(X_train)
 #### Lasso
 - Lasso also adds regularisation penalty, this one is L1. Looks similar, but is a sum of the absolute values, rather than sum of squares. 
 - This sets parameter weights to 0 for least influential variables (called sparse solution), is a kind of feature selection.
-- alpha controls L1 regularization (still not quite got my head around alpha..)
+- alpha controls L1 regularization (still not quite got my head around alpha..) - there is an optimal range for alpha that neither under or over fits (of course different for each data set), and other factors like preprocessing methods
+- Use *ridge* when you have many small/medium sized effects on output variables. Use *lasso* when you have only a few variables with medium/large effect on output.
+- `Lasso` much the same to implement as `Ridge` above, but has a `max_iter` arg, this will increase computation time, but will assist with convergence warnings. 
+- can look at features with non-zero weight to understand heavy weights and strong relationships between input variables.
+#### Polynomials
+- Taking two data points, multiplying them all by each other in every way to get 5 dims, and now write a new regression problem to predict y^ but with these 5 features instead of 2.
+- _This is still a a linear regression problem_, the features are just numbers within a weighted sum.
+(formula)[img/polynomial.png]
+- ^ Polynomial feature transformation, transforms a problems into a higher dimensional regression space, and allows us to use a richer set of complex functions to fit the data. _This is very effective with classification_. `from sklearn.preprocessing import PolynomialFeatures`
+- When we add these features, we're adding to the models ability to capture interactions between the different variables by adding them as features to the model.
+
+### Logistic Regression
+ - (Actually used for classification!)
+- :FUTURE READING: - Non-linear basis functions for regression.
