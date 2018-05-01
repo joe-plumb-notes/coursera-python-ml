@@ -90,6 +90,18 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)
 - successful supervised learning is gauged on the algorithms ability to predict on unseen data.
 - algorithm will assume test set is drawn from same underlying distribution as training set - _overfitting_ typically occurs when we try to fit an overly complex model with insufficient data volumes. _The model can't see more general, global data patterns if the training set is too small_ - there is not enough data to constrain the model to respect the broader trends.
 - Understanding, detecting, and avoiding overfitting is perhaps the most important aspect of applying supervised ML.
-- Underfitting in regression example: applying linear regression when the model needs to be more complex.
-- Quadratic relationship could give a curve, provide improved fit to the training data. If we believe the relationship between variables to be a function of several different parameters, a polynomial regression may fit better, and capture more subtle trends, but also has much higher varience, leading (potentially) to overfitting (too localized to the training data)
-- 5:40
+- Regression example: applying linear regression when the model needs to be more complex leads to underfitting. Quadratic relationship could give a curve, provide improved fit to the training data. If we believe the relationship between variables to be a function of several different parameters, a polynomial regression may fit better, and capture more subtle trends, but also has much higher varience, leading (potentially) to overfitting (too localized to the training data)
+- For a simple 2 dimensional classification, the problem is in defining the decision boundary. A linear classifier can underfit (a la the above example), simply doesn't capture the patterns, and fit quite well, if it is aware of the location of certain data points. Overfitting would again, be overly complex and fit very well with the training data, but be too specific. Highly variable. 
+- For k-NN, the general idea is that as we decrease K for k-NN classifiers, we increase the risk of overfitting because, where K=1 for example, we're trying to capture very local changes in the decision boundary that may not lead to good generalization behavior for future data. 
+
+### Datasets
+- `sklearn` has a variety of methods to create synthetic datasets in the `sklearn.datasets` lib.
+- synthetic data sets typically have low number of features/dimensions. Makes them easy to explain and visualize. high dimensional (typically real world data sets are) datasets have most of their data in corners with lots of empty space, making it more challening to visualise
+- `make_regression`, `make_classification`, `make_blobs`
+- we'll use fruits data set for multi-class classification
+
+### k-NN : Classification and Regression
+- To make a classification predicition for any query point, the classifier looks back in its training set to identify the k neighbors.
+- increasing k can result in a much smoother decision boundary, i.e. lower complexity and less variance - which can result in better performance on unseen test data, as global trends are better reflected in the model. 
+- k-NN for regression works as you would expect - find the k neighbors, and the prediction = average y (continuous variable) of the k training points.
+- 
