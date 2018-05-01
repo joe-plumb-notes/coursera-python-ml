@@ -132,7 +132,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)
 - Because regularisation is imposing the sum of squares penalty on the size of the weights, and the scales of the different features can be very different, then different scales have different impacts on the total penalty incurred (because it's a sum of squares) - transforming the input features to be on the same scale means the ridge penalty is more evenly applied and generates better results.
 - Bottom line? _Normalisation is important_, and will study more as we go. 
 - *MinMax scaling* is a widely used form of feature normalisation. This transforms all input variables so they are on a scale between 0 and 1. This is done by taking the min and max values from each feature on the training data, then applying the minmax formula:
-!(formula)[img/minmax.png]
+![formula](img/minmax.png)
 - Example use:
 ```
 from sklearn.preprocessing import MinMaxScaler
@@ -162,7 +162,7 @@ X_train_scaled = scaler.fit_transform(X_train)
 #### Polynomials
 - Taking two data points, multiplying them all by each other in every way to get 5 dims, and now write a new regression problem to predict y^ but with these 5 features instead of 2.
 - _This is still a a linear regression problem_, the features are just numbers within a weighted sum.
-!(formula)[img/polynomial.png]
+![formula](img/polynomial.png)
 - ^ Polynomial feature transformation, transforms a problems into a higher dimensional regression space, and allows us to use a richer set of complex functions to fit the data. _This is very effective with classification_. `from sklearn.preprocessing import PolynomialFeatures`
 - When we add these features, we're adding to the models ability to capture interactions between the different variables by adding them as features to the model.
 
