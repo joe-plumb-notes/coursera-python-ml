@@ -122,3 +122,37 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)
 - k-NN doesn't make a lot of assumptions about the data structure, so gives potentially accurate but sometimes unstable predictions that are sensitive to small changes in training data. Linear models make strong assumptions about data structure, providing stable but potentially inaccurate predictions. 
 
 ### Ridge, Lasso, Polynomial Regression
+#### Ridge
+- Ridge regression is another way to estimate w and b for a linear model. It uses the same least-squares criterion, but adds a penalty for large variations in w params. 
+- Regularisation = the addition of the penalty term. This is useful because it prevents overfitting , so improves likely general performance of the model by restricting possible parameter selections. Regularisation usually reduces complexity of final estimated models. Reduced complexity = reduced weights, and regularisation supports this because bigger weights incur a higher penalty. Practically, this means that regression accuracy on problems with lots of features can be notably improved.
+- The amount of regularisation to apply is controlled by the alpha parameter (L2 penalty). Larger = more regularisation. (default = 1.0). Setting alpha to 0 is what we were working with earlier, minimizing to total squared error.
+- `from sklearn.linear_model import Ridge`, then use the estimator object as we did before - e.g. `linridge = Ridge(alpha=20.0).fit(X_train, y_train)`
+- Regularisation becomes less important as volume of training data increases.
+- We can get better results from ridge regression by applying _feature preprocessing and normalization_.
+- Because regularisation is imposing the sum of squares penalty on the size of the weights, and the scales of the different features can be very different, then different scales have different impacts on the total penalty incurred (because it's a sum of squares) - transforming the input features to be on the same scale means the ridge penalty is more evenly applied and generates better results.
+- Bottom line? _Normalisation is important_, and will study more as we go. 
+- *MinMax scaling* is a widely used form of feature normalisation. This transforms all input variables so they are on a scale between 0 and 1. This is done by taking the min and max values from each feature on the training data, then applying the minmax formula:
+(formula)[img/minmax.png]
+- Example use:
+```
+from sklearn.preprocessing import MinMaxScaler
+scaler = MinMaxScaler()
+scaler.fit(X_train)
+X_train_scaled = scaler.transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+clf = Ridge().fit(X_train_scaled, y_train)
+r2_score = clf.score(X_test_scaled, y_test)
+
+# Can do fitting and transformation together on training set using
+scaler = MinMaxScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+```
+- Things of nooooote:
+    - we apply the same scalar object to both training and test set
+    - we train the scaler on the training and not the test data
+    - *these are critical!* If the same scaling is not applied to training and test sets, you'll have random data skew and invalid results. If the scalar is prepared (or other normalisation method) with the test set, we get Data Leakage (training phase has information that has leaked from the test set).
+- Downside is that transformed features can be harder to interpret.
+#### Lasso
+- Lasso also adds regularisation penalty, this one is L1. Looks similar, but is a sum of the absolute values, rather than sum of squares. 
+- This sets parameter weights to 0 for least influential variables (called sparse solution), is a kind of feature selection.
+- alpha controls L1 regularization (still not quite got my head around alpha..)
