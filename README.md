@@ -104,4 +104,21 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)
 - To make a classification predicition for any query point, the classifier looks back in its training set to identify the k neighbors.
 - increasing k can result in a much smoother decision boundary, i.e. lower complexity and less variance - which can result in better performance on unseen test data, as global trends are better reflected in the model. 
 - k-NN for regression works as you would expect - find the k neighbors, and the prediction = average y (continuous variable) of the k training points.
-- 
+- an r^2 (r squared) value is used to assess how well the regression model fits the data.
+- k-NN is clear and easy to understand why a prediticion was made. Can be a reasonable baseline with which to compare more complex models. When the training data has many instances/festures, or with sparse data (lots of features, but mostly 0's), k-NN can be slow. 
+- _We have not explored the metric parameter_
+
+### Linear Regression - Least-Squares
+- Linear model expresses the target outputt in terms of a _sum of weighted inputs_.
+- Each input feature is denoted x0, x1, etc, and each feature (xi) has a corresponding weight (wi). (This is similar/_the same?_ to evaluating inputs via weighted nodes in a single layer NN)
+- Least-squares linear regression finds the line through the training data that minimizes the means squared error of the model - i.e. the sum of the squared differences between predicted targetand actual target for all points in the training set. It finds the slope (w) and y intercept (b) that minimizes the mean squared error.
+- There are no parameters to control model complexity.
+- Model complexity is based on the nature of the weights on the input features. Simple models have weight vector closer to zero (more features are not used at all, or have minimal impact on the outcome, i.e. a very small weight)
+- Learning algorithm predicts the target value from each training example, then computs a loss function for each (penalty for incorrect predictions). Incorrect = predicted value is different than actual target value. An example - squared loss function would return the squared difference between target and actual as the _penalty_.
+- Algorithm then computs/searches for the set of w,b params that minizies the total of the loss function against all training points.
+- `from sklearn.linear_model import LinearRegression` to implement - e.g. `linreg = LinearRegression().fit(X_train, y_train)`
+- then `linreg.coef_` = w weight, and `linreg.intercept_` = b. This is just y = mx + c.
+- _If a scikitlearn object attribute ends with an underscore, it means these were derived from training data and not quantities set by the user_
+- k-NN doesn't make a lot of assumptions about the data structure, so gives potentially accurate but sometimes unstable predictions that are sensitive to small changes in training data. Linear models make strong assumptions about data structure, providing stable but potentially inaccurate predictions. 
+
+### Ridge, Lasso, Polynomial Regression
