@@ -169,3 +169,14 @@ X_train_scaled = scaler.fit_transform(X_train)
 ### Logistic Regression
  - (Actually used for classification!)
 - :FUTURE READING: - Non-linear basis functions for regression.
+- In it's simplest form, the target variable of a logistic regression is a binary classification value.
+- The logistic function is an S-shaped curve that gets closer to 1 as the input value increases. Applying the logistic function compresses the output of the linear function so that it is limited to a range between 0 and 1. Different values of b (intercept) and  and w (coefficients) will give different variants of the s-shape - but will always be between 0 and 1.
+- Logistic regression between data set with 2 features gives a linear decision boundary 
+- `from sklearn.linear_model import LogisticRegression`
+- Often get similar results here as you would from linear svc, 
+- Regularization penalty applies here too, as it did for lasso and ridge regressions, which is controlled by the parameter c. Same L2 regularization penalty is used and is turned on by default with a value of c=1. Higher value of C = less regularization. 
+- High values of C = logistic regression trues to fit training data as well as possible.
+- Lower values of C = model tries to find model coefficients that are closer to 0, even if the model fits training data worse. 
+![charts of changing c value](img/changing-c.png)
+
+### Linear Classifiers - Support Vector Machines
