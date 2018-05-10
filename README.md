@@ -166,7 +166,8 @@ X_train_scaled = scaler.fit_transform(X_train)
 - ^ Polynomial feature transformation, transforms a problems into a higher dimensional regression space, and allows us to use a richer set of complex functions to fit the data. _This is very effective with classification_. `from sklearn.preprocessing import PolynomialFeatures`
 - When we add these features, we're adding to the models ability to capture interactions between the different variables by adding them as features to the model.
 
-### Logistic Regression
+### Linear Classifiers
+#### Logistic Regression
  - (Actually used for classification!)
 - :FUTURE READING: - Non-linear basis functions for regression.
 - In it's simplest form, the target variable of a logistic regression is a binary classification value.
@@ -179,4 +180,24 @@ X_train_scaled = scaler.fit_transform(X_train)
 - Lower values of C = model tries to find model coefficients that are closer to 0, even if the model fits training data worse. 
 ![charts of changing c value](img/changing-c.png)
 
-### Linear Classifiers - Support Vector Machines
+#### Support Vector Machines
+- Linear models being used for classification - this approach takes the output of the linear function and applys the sine function to produce a binary output with 2 possible values (i.e. one of 2 class labels).
+- If the target value is greater than 0, the function returns a 1. Less than 0, -1.
+- classifier margin is the max width the decision bounday area can be increased before hitting a data point
+- best classifier might have largest margin - the linear margin with the maximum margin is a linear support vector machine (LSVM).
+- `from sklearn.svm import SVC`
+
+- Linear models are simple and easy to train, offer fast predictions, scale well to large datasets and work well with sparce datasets. 
+- Might get better performance from other models for low-dimensional data, and for classifiction, data may not be linearly seperable  (explored in SVMs with non-linear kernels)
+
+#### Multi-class classification
+- Real-world ML classification problems tend to require prediction of a target category with more than 2 labels. Scikit makes this easy, and does this by converting a multiclass problem into a series of binary problems. 
+- How? It identifies that the target is a categorical variable, and then creates different binary classifiers for each category against all other classes. Then scores the input against each binary classifier, and classifies as the highest scoring category. Simple!
+
+#### Kernelized Support Vector Machines
+- With real data, mny classification problems aren't as easy as drawing a line between two plotted features - often they are not linearly separable.
+- SVMs can provide more complex models that go beyond linear decision boundaries, and can be used for classification and regression. 
+- In essence, kSVMs take the original input data space and transform it to a higher dimensional feature space, where it becomes easire to classify the transformed data using a linear classifier.
+- So - mapping the 1d space into 2d (e.g. y = square of the first feature). No new information is being added (because 1d data point holds all the info), and we can now learn a linear support vector machine in this 2d feature space.
+![1d mapping to 2d mapping by squaring the values on the x axis (creates x^2 like curve)](img/1d-2d.png)
+- Can predict future inputs by translating the 1d value into the 2d feature space and using the 2d SVM
