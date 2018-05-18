@@ -201,3 +201,7 @@ X_train_scaled = scaler.fit_transform(X_train)
 - So - mapping the 1d space into 2d (e.g. y = square of the first feature). No new information is being added (because 1d data point holds all the info), and we can now learn a linear support vector machine in this 2d feature space.
 ![1d mapping to 2d mapping by squaring the values on the x axis (creates x^2 like curve)](img/1d-2d.png)
 - Can predict future inputs by translating the 1d value into the 2d feature space and using the 2d SVM
+- Also very apparent when moving from 2d > 3d as well
+![2d mapping to 3d mapping by building a 3rd vector (1-(x0^2+x1^2)))](img/2d-3d.png)
+- Transformation creates this parabaloid - the central points are higher as they are closer to 0,0, therefore closer to 1 on the new vector. This allows us to create a linear hyperplane (e.g. z=0.9) that easily/almost separates the two classes. The decision boundary consists of the set of points in 3d space where the paraboloid intersects the 
+margin hyperplane decision boundary. This corresponds to an elipse-like decision boundary in 2d space that separates the central plints from the others on the original image.
