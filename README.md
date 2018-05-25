@@ -248,4 +248,16 @@ SVMs are not so good:
 - this is for evaluation, not tuning. We'll look at grid search for this.
 
 ### Decision Trees
-- 
+- Popular supervised method, can be used for both regression and classification.
+- Great for understanding why a decision was made, or what the influential features are in a dataset, and also do not require normalisation or feature pre-processing, making them work well for datasets with a variets of data types (categorical, binary, or continuous features on very different scales)
+- Decision rules to predict the iris dataset
+- Threshold = split point. An informative split of the data does an excellent job of splitting one class from the others. Number of different ways to calculate this
+- Information game - finds the feature which provides the most informative split, and continue this processes recursively. Can do the same for regression, and the preducted result would be the mean of all categorized values in the end leafnode. 
+- `from sklearn.tree import DecisionTreeClassifier`
+- Decision trees can overfit quite easily, as they keep building rules until the leafnodes are pure, and typically complex. 
+- Can prevent overfitting by stopping growth earlier (pre-pruning), or building a complete tree and then simplifying (post pruning, or just pruning). Scikit only implements pre-pruning. We can control this by limitiung the maxiumum depth or maximum number of leafnodes (parameters). 
+- Evaluate the tree by investigating how the data flows through the nodes, looking at a feature importance calculation (indicates a value of between 0 and 1 for each feature , which shows how much of an impact each one has on the overall prediciton.)
+- Normalised so they sum to 1.
+- In scikit, feature importance values are stored in feature_importances_ list, which you can visualize.
+- Low feature importance value does not mean the feature is not important for prediction, just that this feature wasnt chosen at an early level of the tree, so could be highly correlated with other more informative features and therefore provides no new additional signal for the prediction. It's common to use an average over multiple train/test splits when computing this.
+- They may not generalize well - buit this cam be overcome by training an ensemble of decision trees.
