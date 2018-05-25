@@ -197,7 +197,7 @@ X_train_scaled = scaler.fit_transform(X_train)
 #### Kernelized Support Vector Machines
 - With real data, mny classification problems aren't as easy as drawing a line between two plotted features - often they are not linearly separable.
 - SVMs can provide more complex models that go beyond linear decision boundaries, and can be used for classification and regression. 
-- In essence, kSVMs take the original input data space and transform it to a higher dimensional feature space, where it becomes easire to classify the transformed data using a linear classifier.
+- In essence, kSVMs take the original input data space and transform it to a higher dimensional feature space, where it becomes easier to classify the transformed data using a linear classifier.
 - So - mapping the 1d space into 2d (e.g. y = square of the first feature). No new information is being added (because 1d data point holds all the info), and we can now learn a linear support vector machine in this 2d feature space.
 ![1d mapping to 2d mapping by squaring the values on the x axis (creates x^2 like curve)](img/1d-2d.png)
 - Can predict future inputs by translating the 1d value into the 2d feature space and using the 2d SVM
@@ -205,3 +205,47 @@ X_train_scaled = scaler.fit_transform(X_train)
 ![2d mapping to 3d mapping by building a 3rd vector (1-(x0^2+x1^2)))](img/2d-3d.png)
 - Transformation creates this parabaloid - the central points are higher as they are closer to 0,0, therefore closer to 1 on the new vector. This allows us to create a linear hyperplane (e.g. z=0.9) that easily/almost separates the two classes. The decision boundary consists of the set of points in 3d space where the paraboloid intersects the 
 margin hyperplane decision boundary. This corresponds to an elipse-like decision boundary in 2d space that separates the central plints from the others on the original image.
+- There are lots of different kernels that can be applied to data in this fashion, which correspond to different transformations. We're going to focus on _RBF_, the radial basis function kernel, as well as looking at polynomial kernel.
+- Kernel function tells us "given 2 points in the original input space, what is their similarity in the new feature space?"
+- For the radial basis function (RBF) kernel, the similarity between the two points and the transformed feature space is an _exponentially decaying function_ of the distance between the vectors and the original input space. Use transforms all the points inside a certain distance of class0 to one area of transformed feature space, and all points in class1 outside a certain radius get moved to a different area of the feature space. Points between the classes thaqt are close to one another may lie along the maximum margain for a SVM in the transformed feature space.
+- The kernelized SVM tries to find the decision boundary with the maximum margain between classes, using a linear classifier in the transformed feature space, not the original input space.
+- The linear decision boundary in the transformed feature space correspondes to a non-linear decision boundary in the original input space. The kernel trick means that internally, the algorithm doesn't have to perform the actual transformation to the new high dimensional feature space (!) - does this by computing the more complex decision boundaries in terms of similarity calculations between pairs of the points in high dimensional space where the transformed feature representation is implicit.
+- This similarity function (mathematically a kind of dot product) is the kernel in the kernelised SVM.
+- Certain kind of high dimensional spaces can have simple kernel functions, which makes it practical to apply SVMs when the underlying transformed feature space is complex or infitely dimensional.
+- Can easily plug in different kernels, choosing one to suit properties of our data.
+- `from sklean.svm import SVC`
+- polynomial kernal looks like the quadratic solution .. also takes in `degree` parameter which controls model complexity and computational cost of the transformation
+- RBF also has gamma property, which controls how far the influence of a single trending example reaches, which impacts how tightly the decision boundaries end up surrounding points in the input space.
+- small gamma = large similarity radius (smoother decision boundary). large gamma = small similarity radius = tighter, more complex decision boundaries and potential overfitting
+- SVMs also have regularization parameter, `C`. which controls tradeoff between satisfying maximum margain, and avoiding misclassification errors on training set. `C` interacts with gamma.
+- If gamma is large, `C` will have little or no effect, but for a small gamma, the model is much more constrained and `C` will have more influence.
+- Gamma and `C` are typically tuned together:
+    - Gamma typical values 0.0001 and 10
+    - `C` typical values 0.1 to 100
+- Important to normalize data when working with SVMs.
+- scaling the data provides great impact on SVM performance
+SVMs are good:
+- on a range of datasets
+- flexible as different kernel functions can be specified, or customer kernels can be defined
+- on low and high dimensional data (good for text classification)
+SVMs are not so good:
+- in efficiency (runtime speed and memory usage) on datasets over 100k+ observations, so might become unpractical.
+- as they need careful normalisation of features and parameter tuning
+- do not provide direct probability estimates, which are needed for some applications. 
+- difficult to understand why
+
+### Cross Validation
+- method of evaluation that goes beyond evaluating a single train/test split of the data, as both sets come from the same underlying distribution. Cross validation gives more stable and reliable estimates of how the classifier is likely to perform on average, by running multiple different training and test splits, and averaging the results. 
+- most common type of cross validation is `k-fold`, with k sets of 5 or 10:
+![visualization of k-fold example](img/kfold.png)
+- `from sklearn.model_selection import cross_val_score`
+- 3 fold by default. set by defining `cv=x`
+- Computing the accuracy like this gives useful information about how sensitive the model might be to the nature of the specificed training set.
+- The way that the data is structured/ordered could cause issues in this approach (i.e. if you have all of one class followed by all of another etc) - so scikit-learn will actually perform _stratified k-fold cross validation_, which means that effort is made to make proportions of classes in each fold as close as possible to the actual proportions in the overall dataset. This doesn't really count for regression.
+- Can also do "leave-one-out cross validation", which is k-fold with k set to the number of samples in the data set, and tested on one sample per training run. Good for smaller training sets, and can provide improved estimates.
+- Sometimes want to evaluate the effect an important parameter of a model has on the cross validation scores - validation curve can perform this kind of experiment. 
+- `from sklean.model_selection import validation_curve`
+- this is for evaluation, not tuning. We'll look at grid search for this.
+
+### Decision Trees
+- 
