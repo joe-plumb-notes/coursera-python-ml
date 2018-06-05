@@ -261,3 +261,37 @@ SVMs are not so good:
 - In scikit, feature importance values are stored in feature_importances_ list, which you can visualize.
 - Low feature importance value does not mean the feature is not important for prediction, just that this feature wasnt chosen at an early level of the tree, so could be highly correlated with other more informative features and therefore provides no new additional signal for the prediction. It's common to use an average over multiple train/test splits when computing this.
 - They may not generalize well - buit this cam be overcome by training an ensemble of decision trees.
+
+## Week 3
+### Model Evaluation and Selection
+- Have already looked at model evaluation by looking at _accuracy_ and _r^2_. Accuracy is good, simple to understand, but doesn't give a clear enough picture of a supervised learning models performance. Evaluation can help understand which data instances are being classified or predicted incorrectly, which could suggest better features/refinements or different kernel functions to use in the feature and model refinement stage.
+- Evaluation measures enable you to select between different trained models/settings, so evaluation methods must match the goal of the application.
+- e.g. Imbalanced class scenario (lots of negative class, few positive class (e.g. clickthrough on ads, fraudulent transactions)), if you have a classifier that predicts relevant e-commerce items and 1 in 1000 are relevant, and the remainder irrelevant to your customer, a test set accuracy of 99.9% might look good .. but this is no better than always predicting the majority class. 
+- `DummyClassifier` enables you to view accuracy of your classifier in a new way, by comparing the results of the algorithm you've trained against its performance. Dummy classifier doesn't even look at the data, to make a prediction - they just use the strategy they're instructed to use at creation time.
+- Dummy classifiers provide a _null accuracy baseline_, i.e. the accuracy that can be achieved by always picking the most frequent class (e.g. not 1 vs 1 in digit classification), to be used as a useful sanity check and point of comparison. There are different strategies available:
+    - `most_frequent` - always classifies as most frequently occuring class
+    - `stratified` - random predition based on class distribution
+    - `uniform` - generates class prediticions uniformly at random - i.e. all classes have an equal chance (useful to gain an accurate estimate of most common types of prediction errors for each class)
+    - `constant` - useful when computing F-score.
+- So, what does it mean when the accuracy of the dummy classifier and our model are close? Typically, that the features are ineffective, erroneously computed, or missing for some reason .. could also be poor kernel or hyperparameter choice, or large class imbalance (there are too few examples to produce significant gain in accuracy).
+- For imbalanced classification problems, should use metrics other than accuracy. We'll look at AUC (Area under Curve). 
+- `DummyRegressors` are the counterpart to `DummyClassifiers` for regressions, and serve the same role, in providing null outcome baseline and sanity checks. `strategy` parameter for `DummyRegressors` gives a choice of functions that can be applied to the distribution of target values found in the dataset. Can have `mean` or `median` value of training set targets, `quantile` for a user-provided quantile of training targets, or `constant` for a constant user-provided value.
+- _Confusion matrixes_
+- With binary classification, there are 4 possible outcomes: 
+![binary classification confusion matrix](img/binclass_matrix.png)
+- False positive = Type I error
+- False negative = Type II error
+- This also applies to multiclass classification, with k x k matrix. 
+- `from sklearn.metrics import confusion_matrix`
+- Comparing the confusion matricies of different classifiers gives insight into the success and failure observed for each type of classifier.
+
+### Confusion Matricies and Basic Evaluation Metrics
+- _Always look at a confusion matrix for your classifier_
+- Summing the numbers on the diagonal (\) gives the total number of correct classifications. Dividing this by total sum, gives accuracy.
+- Classification error is sum of counts off diagonal, divided by instance count (1-accuracy)
+- The way we evaluate our models needs to reflect the use case, and the impact of incorrect classifications - users are more likely to remember a ml failure, so we want to be confident our prediction is correct, so might want to measure:
+    - True Positive Rate (TPR): What fraction of all positive instances does the classifier correctly identify as positive? `(True positive / (True Positive + False Negative)`). aka sensitivity, probability of detection.
+    - precision which can be done by `(true positives/(true postitives + false positives)`. To increase precision, need to increase true positives or reduce false positives
+    - False Positive Rate (FPR): What fraction of all negative instances does the classifier incorrectly identify as positive? `(False positive / (True Negative + False Positive))`
+- Precision and recall : _Precision_ is the percentage of points correctly classed as positive. _Recall_ is "of all true positive instances, the positive prediction region found x percent of them".
+- We can change the classifier to increase precision, at the cost of reducing recall. Or, we could minimize our false negatives to obtain higher recall - this means we will have more false positives, reducing precision, but if we are detecting tumors, then we are happy to have this impacted.
