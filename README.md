@@ -307,3 +307,18 @@ SVMs are not so good:
 - `support` label shows the number of instances in the test set that have the true label/positive class.
 
 ### Classifier Decision Functions
+- Classifier can provide information about uncertainty associated with a prediciton using the `decision_function` or `predict_proba` method.
+- The `decision_function` method will provide a score that indicates how confidently the classifier predicts the positive class, on the test set. This function returns large magnitude positive scores for positive class predicition, and large magnitude negative scores for the negative points. `predict_proba` provides predicted probabilites of class membership too - positive class predictions score high probabilities close to 1, and negative class probabilities score low (close to 0). _Not all models provide useful probability estimates of this type_.
+- The above evaluators can help give a clearer picture of a classifiers performance. It might not be clear what the right decision threshold should be (do you want the classifier to be more or less conservative about making false positive/false negative errors?) or how this will affect other evaluation metrics (precision/recall), so we can look at how the classifier performs for different decision thresholds, and understand how that impacts the predictions
+- Changing the decision boundary gives different values for precision and recall, which can be plotted on a precision-recall curve and used to understand (and probably compute?) the optimal decision boundary for the classifier (based on the test data)
+
+### Precision-Recall and ROC curves
+- PR curves are a very common evaluation metric. Optimal classifier scores 1 for both precision and recall, so optimal point is in top right of the chart.
+- Scikit has a built-in function for calculating the precision-recall curve - 
+- Jaggedy edges are a consiquence of how formulas for precision and recall are calculated. As decision threshold increases there are fewer and fewer remaining positive predicitions, so fractions computed for the smaller numbers can change quite dramatically. 
+- ROC curves (Receiver operation characteristic curves) illustrate the performance of a binary classifier.
+- x-axis shows the false positive rate, and y-axis shows true positive rate. Ideal point in ROC space is top left - where false positive is 0 and true positive is 1. 
+- ROC curves reporesent different tradeoffs as the decision threshold is varied for the classifier. As with the precision recall curve, changing the decision boundary gives different results of true and false positives.
+- Random classifier (across a big dataset) will give an ROC curve like y=x. As the classifier improves, the ROC curve branches out from here and reaches closer up to the top left corner. The steepness of the curve is important - ideally maximize the true positive rate whist minimizing the false positive rate. The quality of the classifier can be quantified by calculating the area under the curve, which is the metric we use to summarize the classifiers performance. AUC = 0 is a v bad classifier. AUC of 1 = optimal classifier.
+
+### Multi-class Evaluation
