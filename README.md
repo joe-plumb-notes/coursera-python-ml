@@ -291,7 +291,19 @@ SVMs are not so good:
 - Classification error is sum of counts off diagonal, divided by instance count (1-accuracy)
 - The way we evaluate our models needs to reflect the use case, and the impact of incorrect classifications - users are more likely to remember a ml failure, so we want to be confident our prediction is correct, so might want to measure:
     - True Positive Rate (TPR): What fraction of all positive instances does the classifier correctly identify as positive? `(True positive / (True Positive + False Negative)`). aka sensitivity, probability of detection.
-    - precision which can be done by `(true positives/(true postitives + false positives)`. To increase precision, need to increase true positives or reduce false positives
+    - Precision which can be done by `(true positives/(true postitives + false positives)`. To increase precision, need to increase true positives or reduce false positives
     - False Positive Rate (FPR): What fraction of all negative instances does the classifier incorrectly identify as positive? `(False positive / (True Negative + False Positive))`
 - Precision and recall : _Precision_ is the percentage of points correctly classed as positive. _Recall_ is "of all true positive instances, the positive prediction region found x percent of them".
-- We can change the classifier to increase precision, at the cost of reducing recall. Or, we could minimize our false negatives to obtain higher recall - this means we will have more false positives, reducing precision, but if we are detecting tumors, then we are happy to have this impacted.
+- We can change the classifier to increase precision, at the cost of reducing recall. Or, we could minimize our false negatives to obtain higher recall - this means we will have more false positives, reducing precision, but if we are detecting tumors, then we are happy to have this impacted. Recall orented ML tasks include Legal and Healthcare applications, where the consiquenses of incorrect classification of a positive example are high. Human experts are often deployed to assist the filtering of false positives. Customer-facing classification tasks are often precision oriented, as the consiquences (e.g. poor customer experience by providing incorrect or unhelpful info) can result in a memorably bad experience, impacting overall liklihood to purchase etc.
+- F1 score is a useful evaluation metric. This can be calculated in terms of each quantity in the evaluation matrix. F1 score is a special case of the more general F score evaluation metric, which introduces the beta parameter. Adjusting beta controls how much emphasis an evaluation gives to precision vs recall.
+- Precision-orientation uses, beta of 0.5 (fale positives hurt performance more than false negatives)
+- Recall-oriented uses, beta = 2 (fales negatives hurt performance more than false positives)
+![f1 and f-beta score calcuation](img/fscore.png)
+- Beta = 1, gets you F1 score, which weighs precision and recall equally. 
+- `from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score`
+- To calculate the scores, pass actual test labels and predicted variables of those same lables by the classifier in to the `score` function
+- Useful to look at all of these, so can use `from sklearn.metrics import classification_report`
+- Pass true and predicted labels `classification_report(y_test, tree_predicted` as well as optional arguments to control the output format, `target_names['not 1', '1'])`
+- `support` label shows the number of instances in the test set that have the true label/positive class.
+
+### Classifier Decision Functions
