@@ -322,3 +322,66 @@ SVMs are not so good:
 - Random classifier (across a big dataset) will give an ROC curve like y=x. As the classifier improves, the ROC curve branches out from here and reaches closer up to the top left corner. The steepness of the curve is important - ideally maximize the true positive rate whist minimizing the false positive rate. The quality of the classifier can be quantified by calculating the area under the curve, which is the metric we use to summarize the classifiers performance. AUC = 0 is a v bad classifier. AUC of 1 = optimal classifier.
 
 ### Multi-class Evaluation
+- An extension of the methods used in binary classification evaluation.
+- Multiclass results amount to a collection of true vs predicted binary outcomes per class. We can also generate confusion matrices for multiclass, which are very useful as there are many different resulting errors from one true class being predicted as a different class. Classification reports can also be generated.
+- Averaging multiclass results can be done in different ways.
+- Number of instances for each class is important to consider (imbalance classes)
+- Displaying a confusion matrix as a heatmap is good to highlight diferent types of errors, and can point to issues with pre-processing (how?)
+- _Always look at confusion matrix for a classifier, to get insight into what kind of errors are being made for each class, and whether some classes are more prone to error than others._
+- To prevent similar issues in evaluation metrics as we have seen before (e.g. imbalanced class classifier accuracy), we can calculate the macro-average, which calculates the precision of each class' classification, then averages these scores. Each class has equal weight.
+- Micro-average gives each instance equal weight - so largest classes have the most influence. 
+- If the classes have a similar number of instances, then micro and macro averages will be about the same. If some classes are much larger (more instances):
+    - want to weigh metric towards smaller ones? Use macro-average
+    - want to weigh metric towards larger ones? Use micro-average
+- If macro-average is lower than micro-average, examine the smaller classes for poor metric performance
+- If micro-average is lower than macro-average, example larger classes for poor metric performance. 
+
+### Regression Evaluation 
+- Because there are different scenarios and impacts of false positives and false negatives for classifiers, it made sense to distinguish these error types and do more details evaluation analysis. We could, in theory, apply these same analysis to regression .. however in practice, distinguising between these error types is less important.
+- `r2_score` (r squared score) is an adequate evaluation metric for most tasks.
+    - best possible score for `r2_score` = 1, always outputting the same value = 0.0. `r2_score` can be negative for bad model fits.
+- There are a few alternative regression evaluation metrics:
+    - `mean_absolute_error` - mean absolute difference between target and predicted values, corresponds to expected value of L1 loss (used to assess focused outcomes for regression in time series analysis)
+    - `mean_squared_error` - mean squared difference between target and predicted values, corresponds to expected L2 (widely used for regression problems, as larger errrors have correspondingly larger squared contributions to mean error)
+        - both the above _do not distinguish_ between over and under estimation
+    - one common case is outliers in the dataset can have unwanted influence on the overall r2 or mean2 value. `median_absolute_error` is robust to outliers because it uses the median of the error distribution rather than the mean.
+- dummy regressors also exist, which can be used as a baseline to compare your regression to. `from sklearn.dummy import DummyRegressor`
+- make sure the evaluation metric you choose penalizes errors in a way that reflects the consiquenses in the real world.
+
+### Model Selection : Optimizing Classifiers for Different Evaluation Metrics
+- Training and testing on the `same data` generally leads to overfitting, but can be a quick way to test engineering and feature generation are working correctly.
+- A `single train-test split` with a single evaluation metric is fast and easy, but doesn't (again) give a realistic set of estimates for how the model will work on new, future data. We don't get a good picture for the variance in the evaluation metrics that may result as predictions are done on different test sets.
+- We also looked at `k-fold cross-validation`, using K random train-test splits, and an averaged evaluation metric across splits, which leads to more reliable models on unseen data. Can also use `GridSearchCV` within each cross-validation fold to find optimal parameters for a model w.r.t the evaluation metric. The default evaluation metric is accuracy.. so how do we apply new metrics to model selection? when defining the scoring parameter for cross-validation, can enter a string arg for the metric you want to use:
+```
+from sklearn.model_selection import cross_val_score
+from sklearn.svm import SVC
+
+dataset = load_digits()
+
+X, y = dataset.data, dataset.target == 1
+
+clf = SVC(kernel='linear', C=1)
+
+print ('Cross validation (accuracy)',
+      cross_val_score(clf, X, y, cv=5))
+print ('Cross validation (AUC)',
+      cross_val_score(clf, X, y, cv=5, scoring='roc_auc'))
+print ('Cross validation (Recall)',
+      cross_val_score(clf, X, y, cv=5, scoring='recall'))
+```
+- There is also an example in the notebook of using GridSearchCV to find the optimal value of gamma.
+- Complete list of names for evaluation metrics can be seen: 
+```
+from sklearn.metrics.scorer import SCORERS
+
+sorted(list(SCORERS.keys()))
+```
+- Just using cross-validation or a test set for model selection/parameter tuning may still lead to more subtle forms of overfitting, as the more information that is seen about the test data as part of repeat cross-validation passes, the more influence any potential held-up test data has played on selecting the final model. This is called *data leakage*.
+- So we haven't done an evaluation with a truly held-out test set unless we hold back a test split that is unseen by any process until the very end of the evaluation - So this is what we actually do in practice:
+    - There are three data splits: _training_ for model building,  _validation_ for model selection, and _test_ for final evaluation.
+    - Training and test sets are typically split out first, then cross validation is run using the the training data to do model and parameter selection.
+    - Train, validate, test is a universally adopted framework for effective evaulation of ML models. 
+So, to summarize..
+- For many machine learning tasks, accuracy may not be the right goal for the ML application. Consider the outcome of false positives and false negatives in the real world and use this to drive the measure selected.
+- There are other dimensions which it may be important to use the evaluate the model. Learning curves are used to assess how a machine learning algorithm's evaluation metric changes or improves as the algorithm gets more training data. Learning curves may be useful as part of a cost-benefit analysis. e.g. being able to estimate the likely performance improvement of your classifier, if the amount of training data were doubled. Sensitivity analysis (looking at how an evaluation metric changes as small adjustments are made to important model parameters) helps assess how robust the model is to choice of parameters. This may be important if there are other costs such as runtime efficiency that are critical variables when deploying an operational system, that are correlated with different values of parameter (e.g. decision tree depth or future value threshold).
+
