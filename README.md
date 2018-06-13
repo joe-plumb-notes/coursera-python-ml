@@ -1,6 +1,6 @@
 # coursera-python-ml
 
-Here are my notes from studying the [University of Michigan Python Data Science Course](https://www.coursera.org/learn/python-machine-learning). Weekly notebooks are in the `nb` directory. Images in `img` will render at the appropriate place below. the `assingment` notebooks are what I submitted and include my code answers.
+Here are my notes from studying the [University of Michigan Python Data Science Course](https://www.coursera.org/learn/python-machine-learning). Weekly notebooks are in the `nb` directory. Images in `img` will render in the relevant places below, and the `assignment` notebooks are what I submitted and include my code answers. Enjoy!
 
 ## Week 1
 
@@ -392,4 +392,8 @@ So, to summarize..
 ## Week 4
 
 ### Naive Bayes Classifiers
-- based on simple probabalistic models of hom the data in each class might have been generated
+- based on simple probabalistic models of hom the data in each class might have been generated. They are called naive as they make simpliofying assumption that each feature of an instance is independent of all the others, given the class. 
+- Of course, tends not to be the case in practice (height will impact weight..), so whist these assumptions mean that training a naive bayes classifier is fast (only simple, per-class statistics need to be estimated for each feature), the generalization performance tends to be worse than more sophisticated models (or even linear models) for classification.
+- Despite the above, nb can achieve performance that is competitive to others (especially for high dimensional data sets)
+- Three flavours available in scikit learn:
+    - Bernoulli Naive Bayes
