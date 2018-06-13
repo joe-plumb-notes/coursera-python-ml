@@ -1,5 +1,7 @@
 # coursera-python-ml
 
+Here are my notes from studying the [University of Michigan Python Data Science Course](https://www.coursera.org/learn/python-machine-learning). Weekly notebooks are in the `nb` directory. Images in `img` will render at the appropriate place below. the `assingment` notebooks are what I submitted and include my code answers.
+
 ## Week 1
 
 ### Key Concepts
@@ -386,3 +388,8 @@ So, to summarize..
 - There are other dimensions which it may be important to use the evaluate the model. Learning curves are used to assess how a machine learning algorithm's evaluation metric changes or improves as the algorithm gets more training data. Learning curves may be useful as part of a cost-benefit analysis. e.g. being able to estimate the likely performance improvement of your classifier, if the amount of training data were doubled. Sensitivity analysis (looking at how an evaluation metric changes as small adjustments are made to important model parameters) helps assess how robust the model is to choice of parameters. This may be important if there are other costs such as runtime efficiency that are critical variables when deploying an operational system, that are correlated with different values of parameter (e.g. decision tree depth or future value threshold).
 
 - Need some clarity on difference between `decision_function` and `pred_proba` - when do I use each of these?
+
+## Week 4
+
+### Naive Bayes Classifiers
+- based on simple probabalistic models of hom the data in each class might have been generated
