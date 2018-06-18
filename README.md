@@ -442,4 +442,32 @@ nbclf = GaussianNB().fit(X_train, y_train)
 ![gradient boosted decision trees pros and cons](img/gbdt.png)
 
 ### Neural Networks
+- Jeff Hinto course on Deep Learning...
+- Multilayer perceptrons (MLP) in scikit. Also known as feed-forward networks. 
+- Takes the idea of the computation via weighted sums a la logistic regression, but adds additional processing step called hidden layer. Each node in a hidden layer is called a hidden unit, each of which computes a non linear function of the weighted sums of the input features. A weighted sum is then calculated of those hidden outputs to form the final output value.
+- The nonlinear function the hidden unit applies is called the `activation function`. The multiple layers allows the algorithm to learn more complex functions than with linear or logistic functions, enabling neural networks to perform more accurate prediction.
+- More complexity means more weights and model coefficients to estimate during the training phase, meaning more training data and computation are typically required (vs. linear model). 
+- There are a number of choices for activation function (relu, tanh (hyperbolic), logistic..). Relu is default in scikit. Maps values below 0 to 0. Typically use tanh or relu for most tasks.
+- Example in the accompanying notebook. `from sklearn.neural_network import MLPClassifier`
+- `hidden_layer_sizes` parameter requires a list, with *one element for each hidden layer*, that gives the number of hidden units to use for that layer. Default is a single hidden layer with 100 hidden units. 10 might be ok for simple networks, but can often get into the 1000s. `solver` specifies the algorithm to use for specifying the weights in the network. 
+- `random state` can also be used - random weights are assigned on initialization, so by setting the seed for the variables we can assure the results sets will be the same.
+- single hidden unit is equivalent to a linear regression. 
+- Model complexity can be managed by introducing regularization penalties on the weights - L2 regularization penalizes models that have a large sum of the squares of all weighted values, so favours models with more weights shrunk close to zero. Regularization parameter is called alpha (as before), defaults to 0.0001.
+- Low alpha gives highly overfit model that has high accuracy on training set, low on test. Higher values result in much smoother decision boundaries whilst capturing the global structure of the data, meaning it generalizes much better.
+- Input featuers must be properly normalized, i.e. `MinMaxScaler` 
+- Can also use MLP for regression - in fact, some deep learning problems are regression problems. `from sklean.neural_network import MLPRegressor`.
+- notebbok has examples of nested for loops to train different models. 
+![visualisation of effects of different activation functions and regularization on regression](img/nn1.jpg)
+- As one would expect, increased regularization results in less eratic and more generalized line.
+- curvature of the activation function influences linreg curve. 
+- good choice of features with similar types make better models.
+- Further reading - [Neural Networks made easy (!)](https://techcrunch.com/2017/04/13/neural-networks-made-easy/)
 
+### Data Leakage
+- Situation where data used to train the algorithm happens to include unexpected extra information about the thing trying to predict. Any time information is introduced about the target label/value that would not be available in actual use results in leakage.
+- When data leakage does occur, typically causes results that are too optimistic and disappointing results on new data.
+- More subtle examples..
+    - Predicting if a user will stay on or leave a website, total session length would be a giveaway feature as it is based on information about future page visits.
+    - predicting if a user will open an account, account number field that is only assigned ones the user opens an account would be a giveaway feature .. because account number would mean they have an account!
+![other examples of data leakage](img/dataleakage.jpg)
+- 
