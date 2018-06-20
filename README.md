@@ -470,4 +470,12 @@ nbclf = GaussianNB().fit(X_train, y_train)
     - Predicting if a user will stay on or leave a website, total session length would be a giveaway feature as it is based on information about future page visits.
     - predicting if a user will open an account, account number field that is only assigned ones the user opens an account would be a giveaway feature .. because account number would mean they have an account!
 ![other examples of data leakage](img/dataleakage.jpg)
-- 
+- Detect and avoid data leakage by:
+    - Exploring the data first and identifying features that are highly correlated with the target value
+    - After building the model, look for high feature weights, or suprisingly good overall model performance.
+    - See how the model performs on new data in production, and see if these results match the test/evaluation set performance.
+- Reduce the chance of data leakage by:
+    - performing data prep for each cross validation fold separately - i.e. if you're scaling/normalizing data, don't do this on the whole data set first, perform the scaling/normalization within each fold separately.
+    - use a timestamp cutoff with time series data to make sure you aren't accessing any "future" data as part of the prediction
+    - If you have enough data, split off a final test validation data set as the last validation step to check true generalization performance.
+    
